@@ -15,11 +15,12 @@ p = zeros(m, 1);
 %               You should set p to a vector of 0's and 1's
 %
 
+z = X * theta;
+p = sigmoid(z);
 
-p = sigmoid((theta'*X')');
-idx_positive = find(p > 0.5);
+idx_pos = find(p > 0.5);
 idx_neg = find(p <= 0.5);
-p(idx_positive) = 1;
+p(idx_pos) = 1;
 p(idx_neg) = 0;
 
 
