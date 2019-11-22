@@ -19,11 +19,9 @@ for iter = 1:num_iters
     %       of the cost function (computeCostMulti) and gradient here.
     %
 
-
-    h = theta'*X'; % 1x3 * 3x47 = 1x47
-    dJ = 1./m * sum((h' - y).* X(:,:)); %47x1 .* 47x3 ---> dJ 1x3
-    theta = theta - alpha * dJ'; %3x1 3x1
-    
+    h = X * theta;
+    dJ = 1/m * sum((h - y) .* X);
+    theta = theta - alpha * dJ';
 
     % ============================================================
 
