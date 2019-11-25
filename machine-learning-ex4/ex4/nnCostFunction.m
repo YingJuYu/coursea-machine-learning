@@ -62,8 +62,36 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+%size(X) % 5000 x 400 --> totalTraingingExample, m x # input features, X
+%size(y) % 5000 x 1   --> totalTraingingExample, m x # output, y
+%Training Sets : X(m,1:401);
+
+% reorder y outputs to Y : 10 x 5000
+Y = zeros(num_labels, m); %10 x 5000
+for i = 1 : m
+  Y(y(i),i) = 1;
+endfor
 
 
+%Adding a0^(1) = 1 to all trainging examples, then transpose a^(1)
+a1 = [ones(m, 1) X]'; % a^(1): (input feature + 1) x totalTraingingExample
+%Calculate Theta1 (25 x 401) * a^(1) (401 x 5000)
+z2 = Theta1 * a1;
+a2 = sigmoid(z2); %25 x 5000
+
+a2 = [ones(m, 1) a2']'; % a^(2): 26 x 5000
+%Calculate Theta2 (10 x 26) * a^(2) (26 x 5000)
+z3 = Theta2 * a2;
+a3 = sigmoid(z3); %10 x 5000 ===> h_theta(X)
+
+h = a3;
+
+% J = sum(sum((-Y).*log(h) - (1-Y).*log(1-h), 2))/m
+
+for i = 1 : m
+J = J + 1/m*(-Y(:,i)' * log(h(:,i)) - ...
+(1 - Y(:,i))' * log(1 - h(:,i)));
+endfor
 
 
 
