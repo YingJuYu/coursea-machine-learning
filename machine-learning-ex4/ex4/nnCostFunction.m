@@ -86,27 +86,36 @@ a3 = sigmoid(z3); %10 x 5000 ===> h_theta(X)
 
 h = a3;
 
-% J = sum(sum((-Y).*log(h) - (1-Y).*log(1-h), 2))/m
+J = sum(sum((-Y).*log(h) - (1-Y).*log(1-h), 2))/m % column-wise operation
+%for i = 1 : m
+%J = J + 1/m*(-Y(:,i)' * log(h(:,i)) - ...
+%(1 - Y(:,i))' * log(1 - h(:,i)));
+%endfor
 
-for i = 1 : m
-J = J + 1/m*(-Y(:,i)' * log(h(:,i)) - ...
-(1 - Y(:,i))' * log(1 - h(:,i)));
-endfor
+%Regulazation term
 
+Jreg = lambda/(2*m)*( sum(sum(Theta1(:,2:end).^2, 2)) + sum(sum(Theta2(:,2:end).^2, 2)));
 
+J = J + Jreg;
+% ==============================================================================
+%Gradient
 
+delta3 = a3 .- Y; %10 x 5000
 
+z2 = z2'; %25 x 5000 --> 5000 x 25
+z2 = [ones(size(z2,1), 1) z2]; %5000 x 26
+delta2 = Theta2'*delta3 .* sigmoidGradient(z2)';
+% size(delta2) 26 x 5000
 
+Delta2 = zeros(size(delta3*a2'));
+Delta2 = Delta2 + delta3*a2'; % 10x 26
 
-
-
-
-
-
-
-
-
-
+Delta1 = zeros(size(delta2*a1'));
+Delta1 = Delta1 + delta2*a1';
+Delta1
+Theta1_grad = Delta1./m + lambda.*Theta1';
+Theta2_grad = Delta2./m + lambda.*Theta2';
+% 2019/11/26
 
 % -------------------------------------------------------------
 
