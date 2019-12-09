@@ -28,9 +28,10 @@ y  = 1 + mod(1:m, num_labels)';
 nn_params = [Theta1(:) ; Theta2(:)];
 
 % Short hand for cost function
+
 costFunc = @(p) nnCostFunction(p, input_layer_size, hidden_layer_size, ...
                                num_labels, X, y, lambda);
-
+                               
 [cost, grad] = costFunc(nn_params);
 numgrad = computeNumericalGradient(costFunc, nn_params);
 
