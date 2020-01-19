@@ -18,13 +18,9 @@ for iter = 1:num_iters
     %
 
     h = X * theta;
-    dJ_1 = 1./m * sum((h - y).* X(:,1)); %97x1-97x1 
-    dJ_2 = 1./m * sum((h - y).* X(:,2));
-
-
-    theta(1) = theta(1) - alpha * dJ_1; 
-    theta(2) = theta(2) - alpha * dJ_2;
-
+    theta = theta - alpha/m .* ((h - y)' * X)';
+    
+    
     % ============================================================
 
     % Save the cost J in every iteration    
